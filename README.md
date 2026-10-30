@@ -171,6 +171,30 @@ schtasks /Create /TN "DSH Purge Heal" /SC MINUTE /MO 10 /F `
 
 ---
 
+## 怎么往回推（`tools/push.ps1`）
+
+这台机器上 `git push` 不能直接跑通，三个独立的坑叠在一起：
+
+1. **全局 `url.insteadOf` 把 github.com 改写成 `gh-proxy.com/https://github.com/`**
+   —— 那个镜像只服务公开只读流量，带鉴权的 push 必然失败
+2. **直连 443 到 github.com 时通时断**（`Connection was reset` / `Could not connect after 21s`）
+   —— 必须显式指定本地代理，走系统代理设置 git 不认
+3. **token 绝不能写进 `.git/config`**
+
+`tools/push.ps1` 一次解决三条：用临时 `GIT_CONFIG_GLOBAL` 屏蔽重写、`-c http.proxy` 走代理、
+token 只作为一次性 `http.extraheader` 出现。
+
+```powershell
+$env:GITHUB_TOKEN = 'ghp_xxx'          # 需要 repo scope
+powershell -File tools\push.ps1
+# 或
+powershell -File tools\push.ps1 -Token ghp_xxx -Proxy http://127.0.0.1:7890
+```
+
+脚本结束会删临时配置并清环境变量，token 不会留在磁盘上。
+
+---
+
 ## 上游与许可
 
 `vendor/dsh-purge-community-1.6.60.tgz` 来自
