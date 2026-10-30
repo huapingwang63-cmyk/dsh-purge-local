@@ -1,0 +1,234 @@
+# Your patch layer for this dsh profile, applied after every bundle layer:
+# a top-level YAML array of loader patch entries (id-targeted config
+# overrides, disables, and insert lists; `!!js` expressions allowed).
+- id: ui-settings-general
+  name: "@deepseek-ai/dsh-client-ui-settings-general"
+  config:
+    welcomeNoticeVersion: 2026-08-13.1
+- id: agent-default-model
+  name: "@deepseek-ai/dsh-agent-default-model"
+  config:
+    provider: qwen-token-plan-cn
+    model: deepseek-v4.1-flash
+- id: ui-theme
+  name: "@deepseek-ai/dsh-client-ui-theme"
+  config:
+    preference: system
+- id: ui-chat
+  name: "@deepseek-ai/dsh-client-ui-chat"
+  config:
+    transcriptView: standard
+    performanceUsage: detailed
+- id: ui-settings
+  name: "@deepseek-ai/dsh-client-ui-settings"
+  config:
+    enabled: true
+- id: ui-settings-account
+  name: "@deepseek-ai/dsh-client-ui-settings-account"
+  config:
+    version: 1
+    step: done
+    usage: detailed
+    developerTools: true
+    purpose: null
+    process: standard
+    completion: api-key
+- id: pet
+  name: "@linxin666/dsh-pet"
+  config:
+    petId: whale-girl
+    visible: true
+    size: 160
+    right: 0
+    bottom: 455
+- id: llm-pi-ai
+  name: "@deepseek-ai/dsh-llm-pi-ai"
+  config:
+    providers:
+      qwen-token-plan-cn:
+        apiKeyEnv: QWEN_TOKEN_PLAN_CN_API_KEY
+        baseURL: https://maas.qianwenaiapi.com/compatible-mode/v1
+        models:
+          - id: deepseek-v3.2
+            name: DeepSeek V3.2
+            contextWindow: 131072
+            maxTokens: 65536
+            input:
+              - text
+          - id: deepseek-v4-flash
+            name: DeepSeek V4 Flash
+            contextWindow: 1000000
+            maxTokens: 384000
+            input:
+              - text
+          - id: deepseek-v4-flash-0731
+            name: DeepSeek V4 Flash 0731
+            contextWindow: 1000000
+            maxTokens: 384000
+            input:
+              - text
+          - id: deepseek-v4-pro
+            name: DeepSeek V4 Pro
+            contextWindow: 1000000
+            maxTokens: 384000
+            input:
+              - text
+          - id: deepseek-v4-pro-0813
+            name: DeepSeek V4 Pro 0813
+            contextWindow: 1000000
+            maxTokens: 384000
+            input:
+              - text
+          - id: deepseek-v4.1-flash
+            name: DeepSeek V4.1 Flash
+            contextWindow: 1000000
+            maxTokens: 384000
+            input:
+              - text
+              - image
+          - id: glm-5
+            name: GLM-5
+            contextWindow: 202752
+            maxTokens: 16384
+            input:
+              - text
+          - id: glm-5.1
+            name: GLM-5.1
+            contextWindow: 202752
+            maxTokens: 128000
+            input:
+              - text
+          - id: glm-5.2
+            name: GLM-5.2
+            contextWindow: 1000000
+            maxTokens: 131072
+            input:
+              - text
+          - id: glm-5.3
+            name: GLM-5.3
+            contextWindow: 1000000
+            maxTokens: 131072
+            input:
+              - text
+          - id: kimi-k2.5
+            name: Kimi K2.5
+            contextWindow: 262144
+            maxTokens: 98304
+            input:
+              - text
+              - image
+          - id: kimi-k2.6
+            name: Kimi K2.6
+            contextWindow: 262144
+            maxTokens: 262144
+            input:
+              - text
+              - image
+          - id: kimi-k2.7-code
+            name: Kimi K2.7 Code
+            contextWindow: 262144
+            maxTokens: 262144
+            input:
+              - text
+              - image
+          - id: MiniMax-M2.5
+            name: MiniMax-M2.5
+            contextWindow: 196608
+            maxTokens: 32768
+            input:
+              - text
+          - id: qwen3.6-flash
+            name: Qwen3.6 Flash
+            contextWindow: 1000000
+            maxTokens: 65536
+            input:
+              - text
+              - image
+          - id: qwen3.6-plus
+            name: Qwen3.6 Plus
+            contextWindow: 1000000
+            maxTokens: 65536
+            input:
+              - text
+              - image
+          - id: qwen3.7-max
+            name: Qwen3.7 Max
+            contextWindow: 1000000
+            maxTokens: 131072
+            input:
+              - text
+          - id: qwen3.7-plus
+            name: Qwen3.7 Plus
+            contextWindow: 1000000
+            maxTokens: 65536
+            input:
+              - text
+              - image
+          - id: qwen3.8-flash
+            name: Qwen3.8 Flash
+            contextWindow: 1000000
+            maxTokens: 131072
+            input:
+              - text
+              - image
+          - id: qwen3.8-max
+            name: Qwen3.8 Max
+            contextWindow: 1000000
+            maxTokens: 131072
+            input:
+              - text
+              - image
+- id: permission-presets
+  name: "@deepseek-ai/dsh-permission-presets"
+  config:
+    presets:
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+    defaultPreset: danger-full-access
+- id: dsh-purge
+  config:
+    autoApplyOnStart: true
+    hooksDenyBypass: true
+    capabilityProtocol: true
+- id: agent-preset-registry
+  name: "@deepseek-ai/dsh-agent-preset-registry"
+  config:
+    default: standard
+    selectedDefault: unrestricted
+- id: agent-instructions
+  name: "@deepseek-ai/dsh-agent-instructions"
+  config:
+    injectPosition: tail
+- id: mcp-browser
+  name: "@deepseek-ai/dsh-mcp-client"
+  config:
+    serverName: browser
+    transport: stdio
+    command: 'C:\Users\Mr.Wang\AppData\Local\Programs\DeepSeek
+      Harness\resources\runtime\primary-runtime\dependencies\node\bin\node.exe'
+    args:
+      - 'C:\Users\Mr.Wang\AppData\Roaming\npm\node_modules\@playwright\mcp\cli.js'
+      - '--browser'
+      - 'chrome'
+      - '--headless'
+      - '--caps'
+      - 'vision,pdf,devtools'
+      - '--allow-unrestricted-file-access'
+    cwd: 'D:\DSH工作台'
+    toolCallTimeoutMs: 120000
+    reconnect:
+      enabled: true
+      maxAttempts: 10
+# 会话停止时把本轮要点写回 $DSH_HOME/AGENTS.md（长期记忆）。
+# 挂在 workspace/session-stop 上，只追加到文件末尾的自动区。
+#
+# 注意：这里必须用 `insert:` 包裹。cordis-plugin-include 的 patch 语义是
+# 「不带 insert 的条目 = 按 id 修改已存在的 entry」，新插件用裸 id 会被
+# `patch: entry "xxx" not found` 跳过（见 cordis-plugin-include/lib/index.js L90-94）。
+- insert:
+    - id: memory-hook
+      name: 'C:\Users\Mr.Wang\.dsh\dsh-purge\heal\dsh-memory-hook.mjs'

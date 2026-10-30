@@ -13,6 +13,8 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 .
 ├── README.md                 本文件
 ├── .gitignore
+├── .gitattributes            `* -text`：关掉换行符转换，保证逐字节一致
+├── restore.ps1               **一键重建入口**（干跑用 -WhatIfLike）
 ├── prompt-inject.md          L1 提示词注入本体（25128 字节，226 行）
 ├── applied.json              已应用的补丁清单
 ├── expected-baseline.json    官方基线指纹（判断宿主是否被改过）
@@ -25,6 +27,13 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 ├── settle-restart.guard      重启守护标记
 ├── unpacked-asar.json        asar 解包指纹（size + mtimeMs）
 ├── unseal-on-quit.ps1        退出时解封脚本
+├── config/                   要落到 $DSH_HOME 的配置原件
+│   ├── cordis.patch.yml      L3 运行时权限 + 插件装配 + 全部模型定义
+│   ├── package.json          profile 依赖清单（pin 由 restore.ps1 重写）
+│   └── startup/
+│       └── dsh-purge-heal.vbs.tpl   登录启动器模板，纯 ASCII
+├── install/
+│   └── register-tasks.ps1    重建三个计划任务 + 启动项
 ├── heal/                     自愈与验证工具（核心）
 ├── tools/                    维护脚本（push.ps1 等）
 └── vendor/                   上游包离线锚
@@ -32,6 +41,18 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
     ├── vendor.json           integrity 清单（只读锚）
     └── history/              历史版本归档 + .sha512 sidecar
 ```
+
+### 什么入库、什么不入库
+
+入库的是**结构性配置**：补丁清单、基线指纹、契约锚、工具、要落到 `$DSH_HOME` 的原件。
+
+不入库的有三类：
+
+| 类别 | 文件 | 理由 |
+|---|---|---|
+| 运行时状态 | `heal/heal-verdict.json`、`heal/self-check-latest.json`、`heal/upstream-report.json` | 计划任务每 6~12 小时重写，入库只制造噪音 diff |
+| 机密 | `gui-session.json`、`gui-token.json`、`gui-helper.*`、`last-gui-baseurl.txt` | 含实时 cookie 和 launch token |
+| 大体积中间产物 | `vendor/unpacked-*/`（4.15 MB）、`*.bak*` | 可用 `resolver.mjs site` 从 tarball 本地重放 |
 
 ---
 
@@ -50,47 +71,49 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 
 ## 换一台机器怎么恢复
 
-### 0. 前置
+### 结论先说：**克隆下来不能直接用，要跑一次 `restore.ps1`**
 
-- 装好同版本 DSH，**先启动一次再退出**（生成 `$DSH_HOME` 与默认 profile）
-- 自带 node 路径（用于跑 `.mjs`）：
-  ```
-  <安装目录>\resources\runtime\primary-runtime\dependencies\node\bin\node.exe
-  ```
+这个仓库是**配置快照 + 重建工具**，不是可执行安装包。原因：
 
-### 1. 铺回配置
+| 缺什么 | 为什么仓库里没有 | 怎么补 |
+|---|---|---|
+| `node_modules`（1.1 GB） | 体积太大，且 pnpm 可重建 | `restore.ps1` 自动 pnpm install |
+| `resources\app` 里 54 个被打补丁的文件 | 属于宿主安装目录，不是配置 | `heal.ps1` 从 asar 解包后重放 |
+| 计划任务 / 启动项 | 存在系统里，不在文件系统 | `install\register-tasks.ps1` 重建 |
+| `.credentials.yaml` | **凭据，永不入库** | 手工在 Models 页重新填 key |
+| `sessions` / `AGENTS.md` | 会话与个人记忆 | 自己搬或重写 |
+
+### 一条命令
 
 ```powershell
-$src = "D:\DSH工作台\dsh-purge-local"
-$dsh = "$env:USERPROFILE\.dsh"
-
-# L1 提示词注入本体 —— 缺了它破甲只剩一半
-Copy-Item "$src\prompt-inject.md" $dsh -Force
-
-# 状态文件
-Copy-Item "$src\*.json","$src\installed-rev","$src\unseal-on-quit.ps1" $dsh -Force
-
-# 工具集
-New-Item -ItemType Directory "$dsh\dsh-purge" -Force | Out-Null
-Copy-Item "$src\heal"   "$dsh\dsh-purge\" -Recurse -Force
-Copy-Item "$src\vendor" "$dsh\dsh-purge\" -Recurse -Force
+# 前置：装好同版本 DSH，并启动一次再退出（生成 $DSH_HOME 和默认 profile）
+git clone git@github.com:huapingwang63-cmyk/dsh-purge-local.git
+cd dsh-purge-local
+pwsh -File restore.ps1 -WhatIfLike      # 先干跑，看它要动哪些文件
+pwsh -File restore.ps1                  # 真跑
 ```
 
-> `prompt-inject.md` 必须落在 `$DSH_HOME` 根目录（默认 `C:\Users\<你>\.dsh\prompt-inject.md`）。
-> 生效条件是 profile 的 `cordis.patch.yml` 里 `injectPosition: tail` 且官方基线被丢弃 ——
-> 检查办法：改一个字，重开一轮，看它是否出现在系统提示尾部。
+`restore.ps1` 做 7 件事，**每步覆盖前都先备份成 `.bak-<时间戳>`**，幂等，可重复跑：
 
-### 2. 重放宿主补丁（L2）
+1. `prompt-inject.md` → `$DSH_HOME\`（L1 本体，缺了它破甲只剩一半）
+2. 11 个状态文件 → `$DSH_HOME\dsh-purge\`（按**显式白名单**，不用通配，避免把 `restore.ps1` 自己拷进去）
+3. `heal\` + `vendor\` → `$DSH_HOME\dsh-purge\`
+4. `config\cordis.patch.yml` → `profiles\desktop\`（L3 权限）
+5. `config\package.json` → `profiles\desktop\`，并把 `dsh-purge-community` 的 pin **重写成当前机器的绝对路径**
+6. `pnpm install`（`-SkipPnpm` 跳过）
+7. `install\register-tasks.ps1`（`-SkipTasks` 跳过）
+
+跑完它会把下一步交给你，因为**重放补丁必须先关掉 DSH**：
 
 ```powershell
-& "$env:USERPROFILE\.dsh\dsh-purge\heal\heal.ps1" -Wait -Start
+powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.dsh\dsh-purge\heal\heal.ps1" -Wait -Start
 ```
 
 `heal.ps1` 会：检测 `app.asar` 存在 → 等宿主退出 → 调 `apply.mjs`
 → 从 asar 解包到 `resources\app` → 重打 80 条补丁 → 6 份 pi-ai 白名单
 → 把 asar 改名 `.bak` → 重新启动。
 
-### 3. 校验
+### 校验
 
 ```powershell
 $n = "<安装目录>\resources\runtime\primary-runtime\dependencies\node\bin\node.exe"
@@ -98,9 +121,10 @@ $n = "<安装目录>\resources\runtime\primary-runtime\dependencies\node\bin\nod
 & $n "$env:USERPROFILE\.dsh\dsh-purge\heal\resolver.mjs" doctor
 ```
 
-`doctor` 输出 8 项判定，全绿才算通。
+`self-check` 是 37 项（实测 40 ok / 2 warn / 0 fail 为健康），
+`doctor` 是 8 项判定，全绿才算通。
 
-### 4. 恢复 plan 依赖
+### 如果 pin 被 pnpm 装回 GitHub 地址
 
 `profiles\desktop\package.json` 里 `dsh-purge-community` 必须是**本地 file: pin**：
 
@@ -108,12 +132,31 @@ $n = "<安装目录>\resources\runtime\primary-runtime\dependencies\node\bin\nod
 "dsh-purge-community": "file:C:/Users/<你>/.dsh/dsh-purge/vendor/dsh-purge-community-1.6.60.tgz"
 ```
 
-改完执行：
+漂了就手动拉回：
 
 ```powershell
 & $n "$env:USERPROFILE\.dsh\dsh-purge\heal\resolver.mjs" site
 & $n "$env:USERPROFILE\.dsh\dsh-purge\heal\resolver.mjs" pin --yes
 ```
+
+### 计划任务 / 启动项
+
+```powershell
+pwsh -File install\register-tasks.ps1            # 建三个任务 + 启动 vbs
+pwsh -File install\register-tasks.ps1 -DryRun    # 只看不建
+pwsh -File install\register-tasks.ps1 -Remove    # 全删
+pwsh -File install\register-tasks.ps1 -Suffix -TEST   # 建 xxx-TEST 用于验证，用完 -Remove
+```
+
+| 任务 | 周期 | 干什么 |
+|---|---|---|
+| `DSH Purge Heal` | 10 分钟 | asar 回来了就重新解包打补丁 |
+| `DSH Purge Upstream` | 12 小时 | 只探测上游有没有新版，**从不自动升级** |
+| `DSH Self Check` | 6 小时 | 37 项自检，写 verdict json |
+
+> 坑：`schtasks /create` **不要**加 `/ru` / `/rp`。加了会变成「不管用户是否登录都运行」，
+> 要存密码、要管理员权限。不加才会是 `LogonType=InteractiveToken`，和现在能跑的那三个一致。
+> 同理 `ONLOGON` 触发器要管理员，所以登录启动用启动文件夹里的 `.vbs` 代替。
 
 ---
 

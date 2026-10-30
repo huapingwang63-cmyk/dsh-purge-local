@@ -11,6 +11,13 @@ gui-helper.json
 gui-helper.log
 last-gui-baseurl.txt
 
+# 运行时状态 — 计划任务每 6~12 小时重写，入库只会制造噪音 diff。
+# 结构性配置（applied.json / expected-baseline.json / installed-rev /
+# override-state.json / vendor.json）仍然入库，它们是恢复时要用的。
+heal/heal-verdict.json
+heal/self-check-latest.json
+heal/upstream-report.json
+
 # 大体积中间产物 — 可用 resolver.mjs site 从 tarball 本地重放
 vendor/unpacked-*/
 

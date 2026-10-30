@@ -1,0 +1,38 @@
+{
+  "name": "dsh-profile-desktop",
+  "private": true,
+  "dependencies": {
+    "@linxin666/dsh-client-ui-skill-explorer": "0.4.8",
+    "billion-context": "0.1.209",
+    "dsh-cost-meter": "1.9.41",
+    "dsh-lang-zh": "git+https://github.com/Yantingmo/dsh-lang-zh.git",
+    "dsh-our-free-model": "2.1.0",
+    "dsh-plugin-wallpaper-engine": "1.3.1",
+    "dsh-purge-community": "file:C:/Users/Mr.Wang/.dsh/dsh-purge/vendor/dsh-purge-community-1.6.60.tgz",
+    "dsh-think-translate": "^1.2.7",
+    "dsh-whale-widget": "0.4.2",
+    "dsh-workbuddy-connect": "0.7.9",
+    "dshmarket": "^1.66.15",
+    "dsh-better-sidebar": "0.28.1"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dshmarket",
+        "dsh-workbuddy-connect",
+        "billion-context",
+        "dsh-plugin-wallpaper-engine",
+        "dsh-think-translate",
+        "dsh-lang-zh",
+        "dsh-purge-community",
+        "@linxin666/dsh-client-ui-skill-explorer",
+        "dsh-whale-widget",
+        "dsh-cost-meter",
+        "dsh-better-sidebar",
+        "dsh-our-free-model"
+      ]
+    }
+  }
+}
