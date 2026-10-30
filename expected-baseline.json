@@ -1,0 +1,1078 @@
+{
+ "at": "2026-10-27T06:44:05.838Z",
+ "aiBase": "C:/Users/Mr.Wang/AppData/Local/Programs/DeepSeek Harness/resources/app/dsh/node_modules/@deepseek-ai",
+ "hostVersion": "0.2.1-rc.2",
+ "pluginVersion": "1.6.60",
+ "rows": [
+  {
+   "id": 1,
+   "name": "WORKSPACE_CONTEXT_INTRO",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-instructions",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "REPLACEMENT_WORKSPACE_CONTEXT_INTRO",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-instructions",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "SCOPE_INTRO",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-instructions",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "SYSTEM_PROMPT_PERSONA",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-preset",
+     "status": "applied"
+    },
+    {
+     "key": "web-app",
+     "status": "applied"
+    },
+    {
+     "key": "headless",
+     "status": "applied"
+    },
+    {
+     "key": "preset-acp-app",
+     "status": "applied"
+    },
+    {
+     "key": "preset-sdk-app",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 43,
+   "name": "WEB_PRESET_IDENTITY_STRIP",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "preset-standard",
+     "status": "applied"
+    },
+    {
+     "key": "preset-ptc",
+     "status": "applied"
+    },
+    {
+     "key": "preset-cordis",
+     "status": "applied"
+    },
+    {
+     "key": "preset-minimal",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 76,
+   "name": "PRESET_UNRESTRICTED_IDENTITY_STRIP",
+   "layer": "提示词",
+   "status": "skipped",
+   "files": [
+    {
+     "key": "preset-unrestricted",
+     "status": "skipped"
+    }
+   ]
+  },
+  {
+   "id": 70,
+   "name": "PRESET_SHELL_NETWORK",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "preset-minimal",
+     "status": "applied"
+    },
+    {
+     "key": "preset-sdk-minimal",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 73,
+   "name": "PRESET_BASH_MIRROR_LINE",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "preset-minimal",
+     "status": "applied"
+    },
+    {
+     "key": "preset-sdk-minimal",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 71,
+   "name": "LIANGSHEN_IDENTITY_LINE",
+   "layer": "提示词",
+   "status": "missing_file",
+   "files": []
+  },
+  {
+   "id": 5,
+   "name": "APPROVAL_NEVER_SENTENCE",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "user-approval",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "SANDBOX_DENY_FILE_WRITE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "sandbox-local",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "SANDBOX_MODE_DEFAULT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "base",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "APPROVAL_POLICY_DEFAULT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "base",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "name": "APPROVAL_AUTO_GRANT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "user-approval-code",
+     "status": "applied"
+    },
+    {
+     "key": "user-approval",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "name": "APPROVAL_CONFIG_DEFAULT_NEVER",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "user-approval-code",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "name": "APPROVAL_NEVER_SENTENCE_BYPASS",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "user-approval-code",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "name": "APPROVAL_ASK_SENTENCE_BYPASS",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "user-approval-code",
+     "status": "applied"
+    },
+    {
+     "key": "user-approval",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "name": "ESCALATION_WIDENING_EXEMPT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "escalation",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "name": "ESCALATION_GRANT_UNCONDITIONAL",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "escalation",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "name": "SANDBOX_CONFINE_PASSTHROUGH",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "sandbox-local",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "name": "FS_FENCE_DISABLED",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "fs-sandbox",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "name": "FS_OBSERVATION_INTENT_FREE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "fs-observation-policy",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "name": "BASH_TIMEOUT_RESTORE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "base",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "name": "READ_CAPS_RAISED",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-fs",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "name": "SUBAGENT_MAXDEPTH_RAISED",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "subagent",
+     "status": "applied"
+    },
+    {
+     "key": "tool-subagent",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "name": "PRESET_FETCH_ENABLED",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "preset-unrestricted",
+     "status": "applied"
+    },
+    {
+     "key": "preset-standard",
+     "status": "applied"
+    },
+    {
+     "key": "preset-cordis",
+     "status": "applied"
+    },
+    {
+     "key": "preset-ptc",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 25,
+   "name": "HARNESS_IDENTITY_STRIP",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "system-prompt",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 26,
+   "name": "MINIMAL_PERSONA_PURGE",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "preset-minimal",
+     "status": "applied"
+    },
+    {
+     "key": "preset-sdk-minimal",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 80,
+   "name": "MINIMAL_OFFICIAL_TOOLSET",
+   "layer": "工具",
+   "status": "skipped",
+   "files": [
+    {
+     "key": "preset-minimal",
+     "status": "skipped"
+    },
+    {
+     "key": "preset-sdk-minimal",
+     "status": "skipped"
+    }
+   ]
+  },
+  {
+   "id": 28,
+   "name": "LIANGSHEN_PHASE1_KEEP_INJECT",
+   "layer": "提示词",
+   "status": "na",
+   "files": []
+  },
+  {
+   "id": 32,
+   "name": "WEB_SURFACE_IDENTITY_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "harness-dev-context",
+     "status": "skipped"
+    },
+    {
+     "key": "web-app-lib",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 29,
+   "name": "TOOL_WEB_UNTRUSTED_NEUTRAL",
+   "layer": "工具",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-web",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 30,
+   "name": "HOOKS_CLAUDE_DENY_ALLOW",
+   "layer": "工具",
+   "status": "na",
+   "files": []
+  },
+  {
+   "id": 31,
+   "name": "HOOKS_CODEX_DENY_ALLOW",
+   "layer": "工具",
+   "status": "na",
+   "files": []
+  },
+  {
+   "id": 33,
+   "name": "TOOL_SHELL_DENIAL_PROMPT",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-bash",
+     "status": "applied"
+    },
+    {
+     "key": "tool-pwsh",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 34,
+   "name": "SANDBOX_HINT_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "escalation",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 35,
+   "name": "ESCALATION_NEVER_REJECT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "escalation",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 36,
+   "name": "TOOL_FS_ESCALATION_SCHEMA",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-fs",
+     "status": "skipped"
+    },
+    {
+     "key": "escalation",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 37,
+   "name": "SUBAGENT_SCOPE_LOCK_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "subagent",
+     "status": "applied"
+    },
+    {
+     "key": "subagent-types",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 38,
+   "name": "PERSONA_TEXT_PREFIX_ALIAS",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "persona",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 39,
+   "name": "SESSION_V0_PLUGIN_SUMMARY_ALIAS",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "session-format-v0",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 40,
+   "name": "COMPLETE_PROMPT_KEEP_INJECT",
+   "layer": "0.1.5 兼容",
+   "status": "applied",
+   "files": [
+    {
+     "key": "system-prompt",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 42,
+   "name": "SETTINGS_LEGACY_API",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "settings",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 45,
+   "name": "OFFICIAL_DESKTOP_UPDATE_HANDOFF",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "desktop-shell",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 46,
+   "name": "OFFICIAL_DESKTOP_UPDATE_ASCII",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "desktop-shell",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 47,
+   "name": "ANTHROPIC_OAUTH_NO_CLAUDE_IDENTITY",
+   "layer": "0.2.0 兼容",
+   "status": "applied",
+   "files": [
+    {
+     "key": "pi-ai-anthropic-messages",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 48,
+   "name": "TOOL_SHELL_DELETE_MOVE_NEUTRAL",
+   "layer": "工具",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-bash",
+     "status": "applied"
+    },
+    {
+     "key": "tool-pwsh",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 49,
+   "name": "ANTHROPIC_OAUTH_CLI_NEUTRAL",
+   "layer": "0.2.0 兼容",
+   "status": "applied",
+   "files": [
+    {
+     "key": "pi-ai-anthropic-messages",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 50,
+   "name": "SESSION_REFERENCE_FRAMING_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "session-reference",
+     "status": "applied"
+    },
+    {
+     "key": "session-reference",
+     "status": "applied"
+    },
+    {
+     "key": "session-reference",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 51,
+   "name": "FRESH_SESSION_FULL_ACCESS",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "permission-presets",
+     "status": "applied"
+    },
+    {
+     "key": "permission-presets-types",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 52,
+   "name": "SESSION_LOG_UPLOAD_DEFAULT_OFF",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "session-log-deepseek",
+     "status": "applied"
+    },
+    {
+     "key": "session-log-deepseek-types",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 53,
+   "name": "WEB_SURFACE_PROHIBITION",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "harness-dev-context",
+     "status": "applied"
+    },
+    {
+     "key": "web-app-lib",
+     "status": "skipped"
+    }
+   ]
+  },
+  {
+   "id": 54,
+   "name": "DELIVERABLE_DO_NOT",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "deliverables-prompt",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 55,
+   "name": "SYSTEM_PROMPT_REPLACE_HEAD",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 74,
+   "name": "ASSEMBLE_BEFORE_PRESTEP",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 66,
+   "name": "SYSTEM_PROMPT_RENDER_GUARD",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "system-prompt",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 83,
+   "name": "DESKTOP_HOST_CLOSE_NO_FATAL",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "desktop-shell",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 84,
+   "name": "DESKTOP_HOST_CLOSE_CODE0_NO_FAIL",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "desktop-shell",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 67,
+   "name": "AGENT_LOOP_MESSAGES_GUARD",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 68,
+   "name": "SYSTEM_NODES_CONTENT_GUARD",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    },
+    {
+     "key": "session",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 69,
+   "name": "MODEL_STREAM_RELEASE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "llm-deepseek",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 72,
+   "name": "MESSAGES_SYSTEM_CURRENT",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "llm-deepseek",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 56,
+   "name": "REWIND_HIDE_CUT_ONLY",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "conversation-client",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 77,
+   "name": "REWIND_DROP_SENT_ON_APPEND",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "conversation-client",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 75,
+   "name": "REWIND_RESET_TODOS",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-todo",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 57,
+   "name": "DEEPSEEK_SYSTEM_ROLE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "pi-ai-completions",
+     "status": "applied"
+    },
+    {
+     "key": "pi-ai-responses-shared",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 58,
+   "name": "REWIND_SKIP_DERIVE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "session",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 59,
+   "name": "OFFICIAL_AUTO_REVIEW_PASSTHROUGH",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "auto-review",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 60,
+   "name": "OFFICIAL_RUN_CODE_APPROVAL_NEUTRAL",
+   "layer": "工具",
+   "status": "applied",
+   "files": [
+    {
+     "key": "dsh-tools",
+     "status": "applied"
+    },
+    {
+     "key": "dsh-tools-ptc",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 61,
+   "name": "OFFICIAL_SANDBOX_POLICY_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "sandbox-policy",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 62,
+   "name": "OFFICIAL_TOOL_ASK_FAILOPEN",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "dsh-tools",
+     "status": "skipped"
+    },
+    {
+     "key": "dsh-tools-types",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 63,
+   "name": "OFFICIAL_PLAN_MODE_NEUTRAL",
+   "layer": "提示词",
+   "status": "applied",
+   "files": [
+    {
+     "key": "base",
+     "status": "applied"
+    },
+    {
+     "key": "preset-ptc",
+     "status": "applied"
+    },
+    {
+     "key": "preset-standard",
+     "status": "applied"
+    },
+    {
+     "key": "preset-cordis",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 64,
+   "name": "HOOKS_STOP_STEER_NEUTRAL",
+   "layer": "工具",
+   "status": "na",
+   "files": []
+  },
+  {
+   "id": 65,
+   "name": "HOOKS_PRESTEP_REJECT_NEUTRAL",
+   "layer": "工具",
+   "status": "na",
+   "files": []
+  },
+  {
+   "id": 78,
+   "name": "OVERLAY_RESTORE_FROM_BAK",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "app-boot",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 82,
+   "name": "DESKTOP_SHELL_PROFILE_FALLBACK",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "desktop-shell",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 87,
+   "name": "HUNG_PROMPT_LF_NEEDLE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 88,
+   "name": "HUNG_PROMPT_STRICT_NEEDLE",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 90,
+   "name": "RESTORE_NATIVE_STEERING",
+   "layer": "代码",
+   "status": "applied",
+   "files": [
+    {
+     "key": "api-session-controller",
+     "status": "applied"
+    },
+    {
+     "key": "agent-loop",
+     "status": "applied"
+    }
+   ]
+  },
+  {
+   "id": 89,
+   "name": "ASK_USER_WAIT_CAPPED",
+   "layer": "工具",
+   "status": "applied",
+   "files": [
+    {
+     "key": "tool-ask-user",
+     "status": "applied"
+    }
+   ]
+  }
+ ]
+}

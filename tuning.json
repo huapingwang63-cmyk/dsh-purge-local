@@ -1,0 +1,7 @@
+{
+  "boost": true,
+  "injectPosition": "tail",
+  "askNoBlock": true,
+  "rewind": true,
+  "refusalRetry": true
+}

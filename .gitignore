@@ -1,0 +1,28 @@
+# 日志
+*.log
+heal.log
+self-check.log
+upstream.log
+
+# 运行时产物 — 含 cookie / token / 会话机密，绝不入库
+gui-session.json
+gui-token.json
+gui-helper.json
+gui-helper.log
+last-gui-baseurl.txt
+
+# 大体积中间产物 — 可用 resolver.mjs site 从 tarball 本地重放
+vendor/unpacked-*/
+
+# 备份快照
+*/bak-*/
+*.bak
+*.bak-*
+main.js.tplfix.bak
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

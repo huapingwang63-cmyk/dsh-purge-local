@@ -1,0 +1,11 @@
+{
+  "runningVersion": "1.6.60",
+  "installedVersion": "",
+  "reconciliationError": "当前 profile 的插件包标识或版本无效: dsh-purge-community",
+  "pendingVersion": "",
+  "restartRequired": false,
+  "checkedAt": "2026-10-30T15:54:06.245Z",
+  "availableVersion": "1.6.60",
+  "hasUpdate": true,
+  "error": "无法读取社区发行列表：更新请求超时，请检查更新代理或网络；releases.atom 降级失败：GitHub 超时"
+}

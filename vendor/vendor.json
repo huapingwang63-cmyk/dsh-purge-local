@@ -1,0 +1,10 @@
+{
+  "version": "1.6.60",
+  "tarball": "vendor/history/dsh-purge-community-1.6.60.tgz",
+  "sha512Hex": "e0a972f5a444d21cdb4643c1cbfe9d9995189b4b9cec95ed10fee86b68e24a16a12eebbf13ff33ea5a4278ba754f4fd87fed8b118e9feb9964e8342b79e7b11a",
+  "integrity": "sha512-4Kly9aRE0hzbRkPBy/6dmZUYm0uc7JXtEP7oa2jiShahLuu/E/8z6lpCeLp1T0/Yf+2LEY6f65lk6DQreeexGg==",
+  "at": "2026-10-27T07:11:00.000Z",
+  "source": "upstream-release v1.6.60 (releases.atom 2026-10-25T10:46:33Z) + local scan",
+  "note": "破甲契约层的锚。tarball 一旦落盘，此后运行路径完全不依赖 GitHub。社区停更 = 永久停在 1.6.60，仍可无限期使用。",
+  "history": []
+}
