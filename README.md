@@ -13,6 +13,7 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 .
 ├── README.md                 本文件
 ├── .gitignore
+├── prompt-inject.md          L1 提示词注入本体（25128 字节，226 行）
 ├── applied.json              已应用的补丁清单
 ├── expected-baseline.json    官方基线指纹（判断宿主是否被改过）
 ├── installed-rev             当前安装版本标记  apply:1.6.60
@@ -25,6 +26,7 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 ├── unpacked-asar.json        asar 解包指纹（size + mtimeMs）
 ├── unseal-on-quit.ps1        退出时解封脚本
 ├── heal/                     自愈与验证工具（核心）
+├── tools/                    维护脚本（push.ps1 等）
 └── vendor/                   上游包离线锚
     ├── dsh-purge-community-1.6.60.tgz
     ├── vendor.json           integrity 清单（只读锚）
@@ -62,6 +64,9 @@ DeepSeek Harness（DSH）桌面端的**本机破甲配置备份**与**离线重�
 $src = "D:\DSH工作台\dsh-purge-local"
 $dsh = "$env:USERPROFILE\.dsh"
 
+# L1 提示词注入本体 —— 缺了它破甲只剩一半
+Copy-Item "$src\prompt-inject.md" $dsh -Force
+
 # 状态文件
 Copy-Item "$src\*.json","$src\installed-rev","$src\unseal-on-quit.ps1" $dsh -Force
 
@@ -70,6 +75,10 @@ New-Item -ItemType Directory "$dsh\dsh-purge" -Force | Out-Null
 Copy-Item "$src\heal"   "$dsh\dsh-purge\" -Recurse -Force
 Copy-Item "$src\vendor" "$dsh\dsh-purge\" -Recurse -Force
 ```
+
+> `prompt-inject.md` 必须落在 `$DSH_HOME` 根目录（默认 `C:\Users\<你>\.dsh\prompt-inject.md`）。
+> 生效条件是 profile 的 `cordis.patch.yml` 里 `injectPosition: tail` 且官方基线被丢弃 ——
+> 检查办法：改一个字，重开一轮，看它是否出现在系统提示尾部。
 
 ### 2. 重放宿主补丁（L2）
 
