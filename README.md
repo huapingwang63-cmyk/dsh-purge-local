@@ -113,6 +113,45 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\.dsh\dsh-p
 → 从 asar 解包到 `resources\app` → 重打 80 条补丁 → 6 份 pi-ai 白名单
 → 把 asar 改名 `.bak` → 重新启动。
 
+### 为什么 `node_modules` 和 lockfile 都不是可选项
+
+实测过：**在这个 profile 上 `pnpm install` 无法从零复现**，不要指望它。
+
+```
+$ pnpm install            # 没有 lockfile 时
+ERR_PNPM_NO_MATCHING_VERSION  No matching version found for
+  @deepseek-ai/dsh-client-ui-slots@>=0.2.1 <0.3.0-0
+
+The latest release of @deepseek-ai/dsh-client-ui-slots is "0.0.1-rc.1". Published 2026/8/11
+Other releases are: alpha: 0.2.2-alpha.2  next: 0.2.1-rc.5
+```
+
+上游把可用版本全挂在 `next` / `alpha` dist-tag 上，registry 的 `latest` 停在
+`0.0.1-rc.1`。所以只要 pnpm 需要**重新解析整张依赖图**，就必然失败。
+
+加了 lockfile 也还不够 —— 还必须把 settings 对齐，否则报
+`ERR_PNPM_LOCKFILE_CONFIG_MISMATCH (settings.autoInstallPeers)`；
+再对齐之后还会报 `ERR_PNPM_OUTDATED_LOCKFILE`，因为本机 lockfile 本来就比
+package.json 旧（`dsh-our-free-model@2.1.0`、`dsh-better-sidebar@0.28.1` 后加的没进 lockfile）。
+
+结论：
+
+1. **`config/pnpm-lock.yaml` 必须入库**（55.8 KB，1773 行）—— 已入
+2. **`restore.ps1` 默认跳过 install**：只要 `node_modules` 已在就直接用，
+   要重装必须显式 `-ForceInstall`，那时走 `--frozen-lockfile` 并显式对齐 settings
+3. **跨机迁移最可靠的做法是整目录搬 `profiles\desktop`（含 node_modules）**，
+   而不是重新装依赖。1.1 GB，但一次就成
+
+本机把 `dsh-lang-zh`（唯一的 `git+https` 依赖）也打成了 vendor tarball：
+
+```
+vendor/dsh-lang-zh-1.0.0.tgz      3493 B   sha512-aGlPopRl9sH5r/gaTefRqBnsyDiM1u3v2YR3tdQVttmnWYcF07CVVS4F3WR/fTZNr4bu+EwpYgSmGCa0EUGlvg==
+vendor/dsh-purge-community-1.6.60.tgz   sha512-4Kly9aRE0hzbRkPBy/6dmZUYm0uc7JXtEP7oa2jiShahLuu/E/8z6lpCeLp1T0/Yf+2LEY6f65lk6DQreeexGg==
+```
+
+两个锚的清单与来源说明在 `vendor/anchors.json`，`restore.ps1` 把这两条依赖都改写成
+`file:` 绝对路径，这样装依赖时**不需要访问 GitHub**。
+
 ### 校验
 
 ```powershell

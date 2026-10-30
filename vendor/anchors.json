@@ -1,0 +1,24 @@
+{
+  "note": "Offline anchors for every dependency that cannot be pulled from a plain npm registry. restore.ps1 rewrites the matching entries in profiles/desktop/package.json to these file: paths.",
+  "createdAt": "2026-10-31",
+  "anchors": [
+    {
+      "package": "dsh-purge-community",
+      "version": "1.6.60",
+      "tarball": "dsh-purge-community-1.6.60.tgz",
+      "why": "contract layer; pinned to a local file: so the community going dark cannot break the runtime",
+      "sha512Hex": "e0a972f5a444d21cdb4643c1cbfe9d9995189b4b9cec95ed10fee86b68e24a16a12eebbf13ff33ea5a4278ba754f4fd87fed8b118e9feb9964e8342b79e7b11a",
+      "integrity": "sha512-4Kly9aRE0hzbRkPBy/6dmZUYm0uc7JXtEP7oa2jiShahLuu/E/8z6lpCeLp1T0/Yf+2LEY6f65lk6DQreeexGg=="
+    },
+    {
+      "package": "dsh-lang-zh",
+      "version": "1.0.0",
+      "tarball": "dsh-lang-zh-1.0.0.tgz",
+      "why": "upstream is a git+https dependency; without a vendored copy a clean restore needs GitHub reachability, which this machine does not reliably have",
+      "source": "git+https://github.com/Yantingmo/dsh-lang-zh.git",
+      "packedFrom": "node_modules/dsh-lang-zh (installed 1.0.0, 6.3 KB)",
+      "sha512Hex": "68694fa29465f6c1f9aff81a4de7d1a819ecc8388cd6edefd98477b5d415b6d9a7598705d3b095552e05dd647f7d364daf86eef84c296204a61826b41141a5be",
+      "integrity": "sha512-aGlPopRl9sH5r/gaTefRqBnsyDiM1u3v2YR3tdQVttmnWYcF07CVVS4F3WR/fTZNr4bu+EwpYgSmGCa0EUGlvg=="
+    }
+  ]
+}

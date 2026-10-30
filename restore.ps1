@@ -21,6 +21,7 @@ param(
     [string]$DshHome   = $(if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $env:USERPROFILE '.dsh' }),
     [string]$InstallDir = '',
     [switch]$SkipPnpm,
+    [switch]$ForceInstall,
     [switch]$SkipHeal,
     [switch]$SkipTasks,
     [switch]$WhatIfLike
@@ -137,35 +138,81 @@ Act 'copy cordis.patch.yml -> profiles\desktop' {
     Copy-Item (Join-Path $repo 'config\cordis.patch.yml') $profileDir -Force
 }
 
-Act 'rewrite package.json pin -> vendored tarball (absolute, forward slashes)' {
+Act 'rewrite package.json pins -> vendored tarballs (absolute, forward slashes)' {
     $pkgPath = Join-Path $profileDir 'package.json'
     Backup $pkgPath
-    $tarball = (Join-Path $purge 'vendor\dsh-purge-community-1.6.60.tgz').Replace('\', '/')
     $pkg = [System.IO.File]::ReadAllText((Join-Path $repo 'config\package.json'))
+
+    # dsh-purge-community: the contract anchor, always local.
+    $purgeTar = (Join-Path $purge 'vendor\dsh-purge-community-1.6.60.tgz').Replace('\', '/')
     $pkg = [regex]::Replace($pkg,
         '"dsh-purge-community"\s*:\s*"[^"]*"',
-        '"dsh-purge-community": "file:' + $tarball + '"')
+        '"dsh-purge-community": "file:' + $purgeTar + '"')
+    Say "pin dsh-purge-community -> file:$purgeTar" 'ok'
+
+    # dsh-lang-zh: only dep that would otherwise hit GitHub during install.
+    # That makes a clean restore depend on network conditions, which defeats
+    # the point of a frozen snapshot. Pin it when the vendored copy exists.
+    $langTar = Join-Path $purge 'vendor\dsh-lang-zh-1.0.0.tgz'
+    if (Test-Path $langTar) {
+        $langUrl = $langTar.Replace('\', '/')
+        $pkg = [regex]::Replace($pkg,
+            '"dsh-lang-zh"\s*:\s*"[^"]*"',
+            '"dsh-lang-zh": "file:' + $langUrl + '"')
+        Say "pin dsh-lang-zh          -> file:$langUrl" 'ok'
+    } else {
+        Say 'dsh-lang-zh stays a git dep (vendored tgz absent) -- install will need GitHub' 'warn'
+    }
+
     [System.IO.File]::WriteAllText($pkgPath, $pkg, (New-Object System.Text.UTF8Encoding($false)))
-    Say "pin -> file:$tarball" 'ok'
+}
+
+# --- 3b. pnpm lockfile -----------------------------------------------------
+# NOT optional. Without it pnpm has to re-resolve the whole graph, and
+# @deepseek-ai/* only publish the versions this profile needs under the
+# `next`/`alpha` dist-tags -- a plain resolve dies on
+#   ERR_PNPM_NO_MATCHING_VERSION ... @deepseek-ai/dsh-client-ui-slots@>=0.2.1 <0.3.0-0
+# (registry latest is 0.0.1-rc.1). Keep the lockfile, install frozen.
+$lockSrc = Join-Path $repo 'config\pnpm-lock.yaml'
+if (Test-Path $lockSrc) {
+    Act 'copy pnpm-lock.yaml -> profiles\desktop' {
+        Backup (Join-Path $profileDir 'pnpm-lock.yaml')
+        Copy-Item $lockSrc $profileDir -Force
+    }
+} else {
+    Say 'pnpm-lock.yaml absent in repo -- install will almost certainly fail' 'warn'
+    [void]$problems.Add('no lockfile')
 }
 
 # --- 4. pnpm install --------------------------------------------------------
+$nm = Join-Path $profileDir 'node_modules'
 if ($SkipPnpm) {
     Say 'pnpm install skipped (-SkipPnpm)' 'skip'
+} elseif ((Test-Path $nm) -and -not $ForceInstall) {
+    Say 'node_modules already present -- leaving it alone (use -ForceInstall to redo)' 'skip'
 } else {
     $pnpm = Join-Path $InstallDir 'resources\runtime\primary-runtime\dependencies\pnpm\bin\pnpm.mjs'
     if (-not (Test-Path $pnpm)) {
-        Say 'pnpm.mjs not found; run "pnpm install" in profiles\desktop yourself' 'warn'
+        Say 'pnpm.mjs not found; run pnpm install in profiles\desktop yourself' 'warn'
         [void]$problems.Add('pnpm missing')
     } elseif (-not $nodeExe) {
         Say 'node.exe missing; cannot run pnpm' 'warn'
         [void]$problems.Add('node missing')
     } else {
-        Act 'pnpm install --dir profiles\desktop' {
+        Act 'pnpm install --frozen-lockfile (settings aligned to lockfile)' {
             Push-Location $profileDir
             try {
-                & $nodeExe $pnpm install --prefer-offline 2>&1 |
-                    ForEach-Object { Write-Host "       $_" }
+                $o = & $nodeExe $pnpm install --frozen-lockfile --prefer-offline `
+                        --config.autoInstallPeers=false --config.excludeLinksFromLockfile=false 2>&1
+                $code = $LASTEXITCODE
+                $o | ForEach-Object { Write-Host "       $_" }
+                if ($code -ne 0) {
+                    Say 'pnpm install failed -- see the remediation notes above' 'warn'
+                    Say 'most likely: package.json specifiers drifted from pnpm-lock.yaml.' 'info'
+                    Say 'Either copy node_modules from the old profile (fastest, always correct),' 'info'
+                    Say 'or align the two files by hand, then rerun with -ForceInstall.' 'info'
+                    [void]$problems.Add('pnpm install failed')
+                }
             } finally { Pop-Location }
         }
     }
