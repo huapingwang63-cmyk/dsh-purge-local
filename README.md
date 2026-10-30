@@ -180,9 +180,41 @@ schtasks /Create /TN "DSH Purge Heal" /SC MINUTE /MO 10 /F `
 
 ---
 
-## 怎么往回推（`tools/push.ps1`）
+## 怎么往回推
 
-这台机器上 `git push` 不能直接跑通，三个独立的坑叠在一起：
+### 首选：SSH（已配好，不需要任何 token）
+
+remote 现在是 `git@github.com:huapingwang63-cmyk/dsh-purge-local.git`，直接 `git push` 即可：
+
+```powershell
+git push                      # 推 committed 的内容
+git push origin <tag>         # 推标签
+```
+
+依赖的密钥：
+
+| 项 | 值 |
+|---|---|
+| 私钥 | `~/.ssh/id_ed25519_personal`（**无密码**） |
+| 公钥 | `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHUzaYmVzB5W2IcRDkEnPdE8MA5RnQTrNU2+ydXkiMJA huapingwang63@gmail.com` |
+| 指纹 | `SHA256:E+g7L6Tm8/MO2bbUxRA/MnA1MXeWBPMRniaGsFVjvAo` |
+| 账号 | `huapingwang63-cmyk` |
+
+> **造密钥的坑**：`ssh-keygen -N '""'` 在 PowerShell 里 `""` 会当**两个引号字符**传进去，
+> 结果是「带密码的密钥」，`BatchMode=yes` 下表现为
+> `Server accepts key: ...` 紧跟 `Permission denied (publickey)`。
+> 正确写法：`cmd /c 'ssh-keygen -t ed25519 -C "mail" -f KEY -N ""'`。
+
+旧 RSA 密钥（注释含公司邮箱）已挪到 `~/.ssh/backup-20261031/`，
+`~/.ssh/config` 里留了 `Host github-rsa` 别名做回退：
+
+```powershell
+git remote set-url origin git@github-rsa:huapingwang63-cmyk/dsh-purge-local.git
+```
+
+### 兜底：HTTPS + PAT（`tools/push.ps1`）
+
+SSH 走不通时才用。这台机器上 `git push` 走 HTTPS 有三个独立的坑叠在一起：
 
 1. **全局 `url.insteadOf` 把 github.com 改写成 `gh-proxy.com/https://github.com/`**
    —— 那个镜像只服务公开只读流量，带鉴权的 push 必然失败
@@ -195,16 +227,20 @@ token 只作为一次性 `http.extraheader` 出现。
 
 ```powershell
 $env:GITHUB_TOKEN = 'ghp_xxx'          # 需要 repo scope
-powershell -File tools\push.ps1
+pwsh -File tools\push.ps1
 # 或
-powershell -File tools\push.ps1 -Token ghp_xxx -Proxy http://127.0.0.1:7890
+pwsh -File tools\push.ps1 -Token ghp_xxx -Proxy http://127.0.0.1:7890
 ```
 
-脚本结束会删临时配置并清环境变量，token 不会留在磁盘上。
+脚本结束会删临时配置并清环境变量，token 不会留在磁盘上。push 前会先
+`git config --get http.https://github.com/.extraheader` 自检，区分「鉴权挂了」和「参数没传进去」。
+
+> 用 HTTPS 兜底后记得把 remote 改回 SSH，不然下次又踩坑 1 和 2。
 
 ---
 
 ## 上游与许可
+
 
 `vendor/dsh-purge-community-1.6.60.tgz` 来自
 [kingcharleslzy-ai/dsh-purge](https://github.com/kingcharleslzy-ai/dsh-purge)，MIT。
